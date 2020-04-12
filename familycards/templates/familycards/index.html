@@ -1,0 +1,24 @@
+{% block content %}
+   <h2>Family Cards</h2>
+   {% if family_members %}
+       <ul>
+       {% for family_member in family_members %}
+           <li><a href="{% url 'view_member' slug=family_member.slug %}">{{ family_member.first_name }} {{ family_member.last_name }}</a></li>
+       {% endfor %}
+       </ul>
+   {% else %}
+       <p>No family members added</p>
+   {% endif %}
+
+
+
+
+    <h2>Add new family members</h2>
+         <form method="post" enctype="multipart/form-data" >
+                {% csrf_token %}
+                {{ family_members_upload.as_p }}
+                <input type="submit" value="Save">
+            </form>
+
+
+{% endblock %}
