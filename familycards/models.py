@@ -53,24 +53,6 @@ class FamilyMember(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-    # def set_parents(self, x):
-    #     self.parents = json.dump({x})
-
-    # def get_parents(self):
-    #     assert False
-    #     return json.loads(self.parents)
-
-
-    # def set_parents(self, x):
-    #     self.parents = x
-    #
-    # def get_parents(self):
-    #     x = self.parents
-    #     print(x, self.parents)
-    #     print(type(x))
-    #     assert False
-    #     return self.parents
-
 
     def get_absolute_url(self):
         return reverse('view_post', args=[str(self.slug)])
