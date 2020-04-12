@@ -68,10 +68,11 @@ class IndexView(TemplateView):
 
 def view_member(request, slug):
    member = get_object_or_404(FamilyMember, slug=slug)
+   print(FamilyMember.parents)
    parents_list = []
-   for parent in FamilyMember.parents:
+   for parent in member.parents:
       p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
-      parents_list.append(get_object_or_404(p, slug=p.slug))
+      parents_list.append(get_object_or_404(FamilyMember, slug=p.slug))
    context = {'member': member, 'parents':parents_list}
    return render(request, 'familycards/view_member.html', context)
 

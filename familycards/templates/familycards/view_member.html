@@ -17,14 +17,12 @@
     <b>Job</b>: {{ member.job }}<br>
     <b>Notes</b>: {{ member.comments }}<br></p>
 
-
+    <b>Parents</b>:
     {% for parent in parents %}
         <li><a href="{% url 'view_member' slug=parent.slug %}">{{ parent.first_name }} {{ parent.last_name }}</a></li>
 
     {% endfor %}
 
-
-    <b>Parents</b>: {{ member.parents }}<br></p>
 {% endblock %}
 
 
