@@ -58,6 +58,14 @@ class FamilyMember(models.Model):
         return reverse('view_post', args=[str(self.slug)])
 
 
+    def get_list_of_parents(self):
+        parents_list = []
+        for parent in self.parents:
+            p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
+            parents_list.append(p)
+        return parents_list
+
+
 class DataFile(models.Model):
 
     def __str__(self):
