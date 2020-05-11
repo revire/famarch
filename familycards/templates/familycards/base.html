@@ -1,11 +1,11 @@
 
 <html>
    <head>
-       <title>{% block head_title %}Family Cards{% endblock %}</title>
+       <title>{% block head_title %}Family Archive{% endblock %}</title>
    </head>
    <body>
-       <h2><a href="{% url 'index' %}">Family Cards</a></h2>
-       <h4><a href="{% url 'view_tree' %}">Family Tree</a></h4>
+       <h2><a href="{% url 'index' %}">Family Archive</a></h2>
+       <h4><a href="{% url 'view_tree' %}">Family Tree</a></h4> <h4><a href="{% url 'index' %}">Family Cards</a></h4>
        {% block content %}
 
        {% endblock %}
