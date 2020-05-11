@@ -6,6 +6,7 @@ from django.template.defaultfilters import slugify
 
 from .models import FamilyMember
 from .forms import UploadFileForm
+from .draw_tree import get_pic_name
 from .media import *
 
 import os
@@ -82,4 +83,12 @@ def view_member(request, slug):
 #    context = {'category': category, 'posts': Blog.objects.filter(category=category)[:5]}
 #    return render(request, 'imnebel/view_category.html', context)
 
+
+def view_tree(request):
+   members = FamilyMember.objects.all()
+   print('got members')
+   tree = get_pic_name(members)
+   print('got tree')
+   context = {'tree': tree}
+   return render(request, 'familycards/view_tree.html', context)
 
