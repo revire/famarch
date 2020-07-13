@@ -20,28 +20,30 @@ class MembersField(models.TextField):
         if value is None:
             return value
 
-        FamilyMember.objects.get(first_name)
+        #FamilyMember.objects.get(first_name)
 
         return value.split(', ')
 
 
 class FamilyMember(models.Model):
-
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
-    other_names = models.CharField(max_length=200)
-    birth_name = models.CharField(max_length=200)
+    other_names = models.CharField(max_length=200, blank=True)
+    birth_name = models.CharField(max_length=200, blank=True)
     slug = models.SlugField(max_length=100, unique=True)
-    date_of_birth = models.DateField()
-    city_of_birth = models.CharField(max_length=200)
-    country_of_birth = models.CharField(max_length=200)
-    education = models.CharField(max_length=200)
-    job = models.CharField(max_length=200)
-    comments = models.CharField(max_length=500)
+    date_of_birth = models.DateField(blank=True)
+    city_of_birth = models.CharField(max_length=200, blank=True)
+    country_of_birth = models.CharField(max_length=200, blank=True)
+    date_of_death = models.DateField(blank=True)
+    city_of_death = models.CharField(max_length=200, blank=True)
+    country_of_death = models.CharField(max_length=200, blank=True)
+    education = models.CharField(max_length=200, blank=True)
+    job = models.CharField(max_length=200, blank=True)
+    comments = models.CharField(max_length=500, blank=True)
     parents = MembersField(blank=True)
-    # siblings = models.TextField(blank=True)
+    partners = MembersField(blank=True)
 
-    #full_name = models.CharField(blank=True, max_length=200)
+    # full_name = models.CharField(blank=True, max_length=200)
 
     # def set_full_name(self, x):
     #     self.full_name = f'{self.last_name} {self.first_name}'
@@ -53,10 +55,8 @@ class FamilyMember(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
-
     def get_absolute_url(self):
         return reverse('view_post', args=[str(self.slug)])
-
 
     def get_list_of_parents(self):
         parents_list = []
@@ -64,6 +64,14 @@ class FamilyMember(models.Model):
             p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
             parents_list.append(p)
         return parents_list
+
+
+    def get_list_of_partners(self):
+        partners_list = []
+        for partner in self.partners:
+            p = FamilyMember.objects.filter(first_name__startswith=partner.split(' ')[0])[0]
+            partners_list.append(p)
+        return partners_list
 
 
 class DataFile(models.Model):
@@ -74,4 +82,3 @@ class DataFile(models.Model):
     file = models.FileField(upload_to='')
     title = models.CharField(max_length=500)
     pub_date = models.DateTimeField(auto_now_add=True)
-

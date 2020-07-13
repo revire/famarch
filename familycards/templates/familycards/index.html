@@ -1,5 +1,7 @@
 {% extends 'familycards/base.html' %}
 
+<div class="container text-center">
+
 {% block content %}
    {% if family_members %}
        <ul>
@@ -17,7 +19,12 @@
                 {% csrf_token %}
                 {{ family_members_upload.as_p }}
                 <input type="submit" value="Save">
-            </form>
+         </form>
 
+        <form method="post" enctype="multipart/form-data" >
+
+        </form>
+
+</div>
 
 {% endblock %}

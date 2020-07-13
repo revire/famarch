@@ -21,6 +21,13 @@ def handle_uploaded_file(f):
          destination.write(chunk)
 
 
+def handle_date(d):
+   try:
+      correct_date = datetime.datetime.strptime(d, '%Y-%m-%d')
+   except:
+      correct_date = datetime.datetime.strptime(d, '%Y')
+   return correct_date
+
 class IndexView(TemplateView):
    template_name = 'familycards/index.html'
 
@@ -43,15 +50,18 @@ class IndexView(TemplateView):
                   last_name=row[1],
                   other_names=row[2],
                   birth_name=row[3],
-                  date_of_birth=datetime.datetime.strptime(row[4], '%Y-%m-%d'),
+                  date_of_birth=handle_date(row[4]),
                   city_of_birth=row[5],
                   country_of_birth=row[6],
-                  education=row[7],
-                  job=row[8],
-                  comments=row[9],
-                  parents=str(row[10]),
-                  # siblings=None,
-                  slug=slugify(f'{row[0]} {row[1]} {row[4]}')
+                  date_of_death=handle_date(row[7]),
+                  city_of_death=row[8],
+                  country_of_death=row[9],
+                  education=row[10],
+                  job=row[11],
+                  comments=row[12],
+                  parents=str(row[13]),
+                  partners=(row[14]),
+                  slug=slugify(f'{row[0]}_{row[1]}_{handle_date(row[4])}')
                )
                print(created, type(created))
                created.save()
@@ -71,10 +81,17 @@ def view_member(request, slug):
    member = get_object_or_404(FamilyMember, slug=slug)
    print(FamilyMember.parents)
    parents_list = []
-   for parent in member.parents:
-      p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
-      parents_list.append(get_object_or_404(FamilyMember, slug=p.slug))
-   context = {'member': member, 'parents':parents_list}
+   partners_list = []
+   if member.parents != ['']:
+      print(member.parents)
+      for parent in member.parents:
+         p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
+         parents_list.append(get_object_or_404(FamilyMember, slug=p.slug))
+   if member.partners != ['']:
+      for partner in member.partners:
+         p = FamilyMember.objects.filter(first_name__startswith=partner.split(' ')[0])[0]
+         partners_list.append(get_object_or_404(FamilyMember, slug=p.slug))
+   context = {'member': member, 'parents':parents_list, 'partners':partners_list}
    return render(request, 'familycards/view_member.html', context)
 
 
@@ -85,10 +102,11 @@ def view_member(request, slug):
 
 
 def view_tree(request):
-   members = FamilyMember.objects.all()
-   print('got members')
-   tree = get_pic_name(members)
-   print('got tree')
-   context = {'tree': tree}
-   return render(request, 'familycards/view_tree.html', context)
+   pass
+   # members = FamilyMember.objects.all()
+   # print('got members')
+   # tree = get_pic_name(members)
+   # print('got tree')
+   # context = {'tree': tree}
+   # return render(request, 'familycards/view_tree.html', context)
 
