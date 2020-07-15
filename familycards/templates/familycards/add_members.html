@@ -1,0 +1,30 @@
+{% extends 'familycards/base.html' %}
+{% block content %}
+
+ <div class="add-new-members">
+
+        <table style="width:50%">
+          <tr>
+            <th><h3>Add Family Member</h3></th>
+            <th><h3>Import From File</h3></th>
+
+          </tr>
+          <tr>
+            <td><form method="post">
+                        {% csrf_token %}
+                        {{ one_person_upload.as_p }}
+                        <input type="submit" value="Save">
+                 </form></td>
+            <td><form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ family_members_upload.as_p }}
+                        <input type="submit" value="Save">
+                 </form></td>
+
+          </tr>
+
+        </table>
+
+ </div>
+
+{% endblock %}
