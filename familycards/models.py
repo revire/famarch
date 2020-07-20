@@ -42,13 +42,11 @@ class FamilyMember(models.Model):
     comments = models.CharField(max_length=500, blank=True)
     parents = MembersField(blank=True)
     partners = MembersField(blank=True)
-
-    # full_name = models.CharField(blank=True, max_length=200)
+    full_name = models.CharField(blank=True, max_length=200)
 
     # def set_full_name(self, x):
     #     self.full_name = f'{self.last_name} {self.first_name}'
-
-    # @property
+    #
     # def full_name(self):
     #     return(f'{self.first_name} {self.last_name}')
 

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.urls import path
-from .views import IndexView, MembersView
+from .views import IndexView, MembersView, TreeView
 
 from . import views
 
@@ -12,7 +12,7 @@ urlpatterns = [
     path('add_members', MembersView.as_view(), name='add_members'),
     path('member/<slug>', views.view_member, name='view_member'),
     path('member/<slug>/edit', views.edit_member, name='edit_member'),
-    path('tree', views.view_tree, name='view_tree'),
+    path('tree', TreeView.as_view(), name='view_tree'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

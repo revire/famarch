@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404, render
+from django.shortcuts import render_to_response, get_object_or_404, render, redirect
 from django.urls import reverse
 from django.conf import settings
 from django.views.generic import TemplateView
@@ -8,7 +8,7 @@ from django.forms import formset_factory
 
 from .models import FamilyMember
 from .forms import UploadFileForm, UploadOnePerson
-from .draw_tree import get_pic_name
+from .draw_tree import get_pic_name, get_list_of_parents
 from .media import *
 
 import os
@@ -47,10 +47,10 @@ class MembersView(TemplateView):
       return render(request, 'familycards/add_members.html', context)
 
 
-   def add(self, request, **data):
+   def post(self, request, **data):
 
-      file = UploadFileForm(request.POST, request.FILES)
       family_members_upload = None
+      file = UploadFileForm(request.POST, request.FILES)
       if file.is_valid():
          f = request.FILES['file']
          handle_uploaded_file(f)
@@ -73,7 +73,8 @@ class MembersView(TemplateView):
                   comments=row[12],
                   parents=str(row[13]),
                   partners=(row[14]),
-                  slug=slugify(f'{row[0]}_{row[1]}_{handle_date(row[4])}')
+                  slug=slugify(f'{row[0]}_{row[1]}_{handle_date(row[4])}'),
+                  full_name=f'{row[0]} {row[1]}'
                )
                print(created, type(created))
                created.save()
@@ -86,9 +87,14 @@ class MembersView(TemplateView):
       one_person_upload = None
       one_person_form = UploadOnePerson(request.POST)
       if one_person_form.is_valid():
-         print(one_person_form)
          one_person_form.save(commit=False)
-         one_person_upload = UploadOnePerson()
+         # one_person_form.cleaned_data["slug"] = slugify(f'{one_person_form.cleaned_data["first_name"]}_{one_person_form.cleaned_data["last_name"]}_{one_person_form.cleaned_data["date_of_birth"]}')
+         one_person_upload = one_person_form.save()
+         one_person_upload.slug = slugify(f'{one_person_form.cleaned_data["first_name"]}_{one_person_form.cleaned_data["last_name"]}_{one_person_form.cleaned_data["date_of_birth"]}')
+         one_person_upload.full_name = f'{one_person_form.cleaned_data["first_name"]} {one_person_form.cleaned_data["last_name"]}'
+         print('the uploads slug', one_person_upload.slug)
+         one_person_upload.save()
+         print(one_person_upload)
       else:
          one_person_upload = UploadOnePerson()
 
@@ -127,12 +133,11 @@ def edit_member(request, slug):
          member.save()
          # return render(request, 'familycards/view_member.html', slug=member.slug)
       context = {'member': member}
-      return render(request, 'familycards/view_member.html', context)
+      return redirect(request, 'familycards/view_member.html', context)
    else:
       form = UploadOnePerson(instance=member)
    context = {'form': form, 'member':member}
    return render(request, 'familycards/edit_member.html', context)
-
 
 
 # def view_category(request, slug):
@@ -140,13 +145,34 @@ def edit_member(request, slug):
 #    context = {'category': category, 'posts': Blog.objects.filter(category=category)[:5]}
 #    return render(request, 'imnebel/view_category.html', context)
 
-
-def view_tree(request):
-   pass
+class TreeView(TemplateView):
+   def view_tree(request):
+      pass
    # members = FamilyMember.objects.all()
    # print('got members')
    # tree = get_pic_name(members)
    # print('got tree')
    # context = {'tree': tree}
    # return render(request, 'familycards/view_tree.html', context)
+
+   def get(self, request):
+      family_members = FamilyMember.objects.all()
+      print('got members')
+      context = {'family_members': family_members}
+      return render(request, 'familycards/view_tree.html', context)
+
+   def post(self, request, slug):
+      family_member = FamilyMember.object.get(slug=slug)
+      parents_dict = get_list_of_parents(family_member, FamilyMember)
+      family_members = FamilyMember.objects.all()
+      context = {'parents_dict':parents_dict, 'family_member':family_member, 'family_members':family_members}
+      return render(request, 'familycards/view_tree.html', context)
+
+
+
+
+
+
+
+
 

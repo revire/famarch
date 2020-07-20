@@ -2,18 +2,30 @@
 #
 #
 #
-# def get_list_of_children(FamilyMember):
-#     bonds = {}
-#     for fm in FamilyMember:
-#         print(fm)
-#         for parent in fm.get_list_of_parents():
-#             if parent not in bonds.keys():
-#                 bonds[parent] = []
-#             else:
-#                 bonds[parent].append(fm)
-#     print(bonds)
-#     return bonds
-#
+
+from .models import FamilyMember
+
+def get_list_of_parents(family_member, FamilyMember, parents = {}):
+    print(family_member, family_member.parents)
+    if len(family_member.parents)!=['']:
+        for parent in family_member.parents:
+            p = None
+            if FamilyMember.objects.filter(full_name=parent):
+                p = FamilyMember.objects.filter(full_name=parent)[0]
+                parents[p] = {}
+                get_list_of_parents(p, FamilyMember, parents[p])
+        if parents: return parents
+
+    else:
+        return parents
+    print(parents)
+    return parents
+
+
+
+
+
+
 #
 #
 # def make_graph(family):
@@ -37,3 +49,5 @@ def get_pic_name(FamilyMember):
     # bonds = get_list_of_children(FamilyMember)
     # pic_name = make_graph(bonds)
     # return pic_name
+
+
