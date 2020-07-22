@@ -1,0 +1,57 @@
+{% extends 'familycards/base.html' %}
+
+
+{% block content %}
+
+<!--   {% if parents_dict %}-->
+<!--    <a href="{% url 'view_member' slug=family_member.slug %}">{{ family_member.full_name }}</a>-->
+<!--       <ul>-->
+<!--       {% for parents in parents_dict %}-->
+<!--           <li><a href="{% url view_member slug=parent.slug %}">{{ parent.full_name }}</a></li>-->
+<!--       {% endfor %}-->
+<!--       </ul>-->
+<!--   {% else %}-->
+<!--       <p>No Parents Found</p>-->
+<!--   {% endif %}-->
+
+
+<!--   {% if family_members %}-->
+<!--       <ul>-->
+<!--       {% for family_member in family_members %}-->
+<!--           {% ifchanged family_member.first_name.0 %}<h4>{{family_member.first_name.0}}</h4>{% endifchanged%}-->
+<!--           <li><a href="{% url 'view_tree' slug=family_member.slug %}"> {{ family_member.full_name }} </a></li>-->
+<!--       {% endfor %}-->
+<!--       </ul>-->
+<!--   {% else %}-->
+<!--       <p>no family members added</p>-->
+<!--   {% endif %}-->
+
+
+<!--    {% block javascript %}-->
+<!--    <script>-->
+<!--        /*-->
+<!--        On focus out on input nickname,-->
+<!--        call AJAX get request to check if the nickName-->
+<!--        already exists or not.-->
+<!--        */-->
+<!--        $("#slug").focusout(function (e) {-->
+<!--            e.preventDefault();-->
+<!--            var slug = $(this).val();-->
+<!--            // GET AJAX request-->
+<!--            $.ajax({-->
+<!--                type: 'GET',-->
+<!--                url: "{% url 'view_tree' %}",-->
+<!--                data: {"nick_name": nick_name},-->
+<!--                success: function (response) {-->
+<!--                    // if not valid user, alert the user-->
+<!--                },-->
+<!--                error: function (response) {-->
+<!--                    console.log(response)-->
+<!--                }-->
+<!--            })-->
+<!--        })-->
+<!--    </script>-->
+<!--    {% endblock javascript %}-->
+
+
+{% endblock %}

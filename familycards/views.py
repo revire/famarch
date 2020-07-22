@@ -4,7 +4,9 @@ from django.urls import reverse
 from django.conf import settings
 from django.views.generic import TemplateView
 from django.template.defaultfilters import slugify
-from django.forms import formset_factory
+from django.http import JsonResponse
+from django.core import serializers
+
 
 from .models import FamilyMember
 from .forms import UploadFileForm, UploadOnePerson
@@ -27,7 +29,8 @@ def handle_date(d):
    try:
       correct_date = datetime.datetime.strptime(d, '%Y-%m-%d')
    except:
-      correct_date = datetime.datetime.strptime(d, '%Y')
+      d = d+'-01-01'
+      correct_date = datetime.datetime.strptime(d, '%Y-%m-%d')
    return correct_date
 
 class IndexView(TemplateView):
@@ -51,6 +54,7 @@ class MembersView(TemplateView):
 
       family_members_upload = None
       file = UploadFileForm(request.POST, request.FILES)
+      upload_messages = []
       if file.is_valid():
          f = request.FILES['file']
          handle_uploaded_file(f)
@@ -77,29 +81,35 @@ class MembersView(TemplateView):
                   full_name=f'{row[0]} {row[1]}'
                )
                print(created, type(created))
-               created.save()
-               print(created.parents, type(created.parents))
-         message1 = 'Family Uploaded'
+               try:
+                  created.save()
+                  upload_messages.append(f'{created} uploaded')
+               except:
+                  upload_messages.append(f'{created} already in database.')
          family_members_upload = UploadFileForm()
-      else:
-         message1 = UploadFileForm()
+      # else:
+      #    message1 = UploadFileForm()
 
       one_person_upload = None
       one_person_form = UploadOnePerson(request.POST)
       if one_person_form.is_valid():
-         one_person_form.save(commit=False)
+         # one_person_form.save()
+         f = one_person_form.save(commit=False)
          # one_person_form.cleaned_data["slug"] = slugify(f'{one_person_form.cleaned_data["first_name"]}_{one_person_form.cleaned_data["last_name"]}_{one_person_form.cleaned_data["date_of_birth"]}')
-         one_person_upload = one_person_form.save()
+         one_person_upload = f
          one_person_upload.slug = slugify(f'{one_person_form.cleaned_data["first_name"]}_{one_person_form.cleaned_data["last_name"]}_{one_person_form.cleaned_data["date_of_birth"]}')
          one_person_upload.full_name = f'{one_person_form.cleaned_data["first_name"]} {one_person_form.cleaned_data["last_name"]}'
          print('the uploads slug', one_person_upload.slug)
-         one_person_upload.save()
-         print(one_person_upload)
-      else:
-         one_person_upload = UploadOnePerson()
+         try:
+            one_person_upload.save()
+            upload_messages = f'{created} uploaded'
+         except:
+            upload_message = f'{created} already in database.'
+      # else:
+      #    one_person_upload = UploadOnePerson()
 
       context = {'family_members': FamilyMember.objects.all()[:5], \
-                 'message1': message1, \
+                 'upload_messages':upload_messages, \
                  'family_members_upload': family_members_upload, \
                  'one_person_upload': one_person_upload}
       return render(request, 'familycards/add_members.html', context)
@@ -112,7 +122,6 @@ def view_member(request, slug):
    parents_list = []
    partners_list = []
    if member.parents != ['']:
-      print(member.parents)
       for parent in member.parents:
          p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
          parents_list.append(get_object_or_404(FamilyMember, slug=p.slug))
@@ -126,6 +135,7 @@ def view_member(request, slug):
 
 def edit_member(request, slug):
    member = get_object_or_404(FamilyMember, slug=slug)
+
    if request.method == "POST":
       form = UploadOnePerson(request.POST, instance=member)
       if form.is_valid():
@@ -146,8 +156,8 @@ def edit_member(request, slug):
 #    return render(request, 'imnebel/view_category.html', context)
 
 class TreeView(TemplateView):
-   def view_tree(request):
-      pass
+   # def view_tree(request):
+   #    pass
    # members = FamilyMember.objects.all()
    # print('got members')
    # tree = get_pic_name(members)
@@ -161,14 +171,17 @@ class TreeView(TemplateView):
       context = {'family_members': family_members}
       return render(request, 'familycards/view_tree.html', context)
 
-   def post(self, request, slug):
-      family_member = FamilyMember.object.get(slug=slug)
-      parents_dict = get_list_of_parents(family_member, FamilyMember)
-      family_members = FamilyMember.objects.all()
-      context = {'parents_dict':parents_dict, 'family_member':family_member, 'family_members':family_members}
-      return render(request, 'familycards/view_tree.html', context)
-
-
+   # def post(self, request, slug):
+   #    if self.is_ajax and self.request.method == 'POST':
+   #       family_member = FamilyMember.object.get(slug=slug)
+   #       parents_dict = get_list_of_parents(family_member, FamilyMember)
+   #       family_members = FamilyMember.objects.all()
+   #       ser_instance = serializers.serialize('json', [parents_dict, family_members])
+   #       #context = {'parents_dict':parents_dict, 'family_member':family_member, 'family_members':family_members}
+   #       return JsonResponse({"instance": ser_instance}, status=200)
+   #       # return render(request, 'familycards/view_tree.html', context)
+   #
+   #
 
 
 
