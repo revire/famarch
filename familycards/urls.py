@@ -9,9 +9,11 @@ from . import views
 #app_name = 'familycards'
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
+    path('delete_all', IndexView.as_view(), name='delete_all'),
     path('add_members', MembersView.as_view(), name='add_members'),
     path('member/<slug>', views.view_member, name='view_member'),
     path('member/<slug>/edit', views.edit_member, name='edit_member'),
+    path('member/<slug>/delete', views.delete_member, name='delete_member'),
     path('tree', TreeView.as_view(), name='view_tree'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

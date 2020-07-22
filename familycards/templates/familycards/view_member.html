@@ -8,7 +8,10 @@
 
     <a class="btn btn-default" href="{% url 'edit_member' slug=member.slug %}">
         <span class="glyphicon glyphicon-pencil"></span>
-    </a><br><br>
+    </a>
+    <a class="btn btn-default" href="{% url 'delete_member' slug=member.slug %}">
+        <span class="glyphicon glyphicon-remove"></span>
+    </a> <br><br>
 
     <p><b>Name</b>: {{ member.first_name }} {{ member.other_names }} {{ member.last_name }}, ({{ member.birth_name }})<br>
     <b>Date of birth</b>: {{ member.date_of_birth }}<br>

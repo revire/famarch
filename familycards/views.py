@@ -7,7 +7,6 @@ from django.template.defaultfilters import slugify
 from django.http import JsonResponse
 from django.core import serializers
 
-
 from .models import FamilyMember
 from .forms import UploadFileForm, UploadOnePerson
 from .draw_tree import get_pic_name, get_list_of_parents
@@ -29,7 +28,8 @@ def handle_date(d):
    try:
       correct_date = datetime.datetime.strptime(d, '%Y-%m-%d')
    except:
-      d = d+'-01-01'
+      print(d)
+      d = '1900-01-01'
       correct_date = datetime.datetime.strptime(d, '%Y-%m-%d')
    return correct_date
 
@@ -39,6 +39,11 @@ class IndexView(TemplateView):
    def get(self, request):
       context = {'family_members': FamilyMember.objects.all().order_by('first_name')}
       return render(request, self.template_name, context)
+
+   def delete_all(self, request):
+      FamilyMember.objects.all().delete()
+      # context = {'message': f'{count_members} were deleted.'}
+      return redirect('')
 
 
 class MembersView(TemplateView):
@@ -87,8 +92,8 @@ class MembersView(TemplateView):
                except:
                   upload_messages.append(f'{created} already in database.')
          family_members_upload = UploadFileForm()
-      # else:
-      #    message1 = UploadFileForm()
+      else:
+         family_members_upload = UploadFileForm()
 
       one_person_upload = None
       one_person_form = UploadOnePerson(request.POST)
@@ -105,8 +110,9 @@ class MembersView(TemplateView):
             upload_messages = f'{created} uploaded'
          except:
             upload_message = f'{created} already in database.'
-      # else:
-      #    one_person_upload = UploadOnePerson()
+         one_person_upload = UploadOnePerson()
+      else:
+         one_person_upload = UploadOnePerson()
 
       context = {'family_members': FamilyMember.objects.all()[:5], \
                  'upload_messages':upload_messages, \
@@ -148,6 +154,17 @@ def edit_member(request, slug):
       form = UploadOnePerson(instance=member)
    context = {'form': form, 'member':member}
    return render(request, 'familycards/edit_member.html', context)
+
+
+def delete_member(request, slug):
+   member = get_object_or_404(FamilyMember, slug=slug)
+   delete_message = None
+   print('here we are')
+   print(member)
+   member.delete()
+   delete_message = f'{member} is deleted.'
+   context = {'delete_message':delete_message}
+   return redirect('../../')
 
 
 # def view_category(request, slug):
