@@ -13,9 +13,9 @@
 }
 
 
-.members-functions a {
+.members-functions li {
     padding-left: 30px;
-    font-family: 'Nanum Gothic Coding', cursive;
+    font-family: 'Bebas Neue', cursive;
 }
 
 .index-familymembers-az, .index-familymembers-az p {
