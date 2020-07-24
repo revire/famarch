@@ -16,6 +16,7 @@ import os
 import csv
 import datetime
 import json
+import mimetypes
 
 
 def handle_uploaded_file(f):
@@ -39,12 +40,6 @@ class IndexView(TemplateView):
    def get(self, request):
       context = {'family_members': FamilyMember.objects.all().order_by('first_name')}
       return render(request, self.template_name, context)
-
-def delete_all(request):
-   FamilyMember.objects.all().delete()
-   # context = {'message': f'{count_members} were deleted.'}
-   return redirect('../')
-
 
 class MembersView(TemplateView):
 
@@ -165,6 +160,41 @@ def delete_member(request, slug):
    delete_message = f'{member} is deleted.'
    context = {'delete_message':delete_message}
    return redirect('../../')
+
+
+def delete_all(request):
+   FamilyMember.objects.all().delete()
+   # context = {'message': f'{count_members} were deleted.'}
+   return redirect('../')
+
+
+def generate_csv(request):
+   family_members = FamilyMember.objects.all()
+   fields = FamilyMember._meta.fields
+   with open('exported_family.csv', 'w') as f:
+      writer = csv.writer(f)
+      for member in family_members:
+         row = []
+         for field in fields:
+            print(field.name.strip())
+            if field.name in ('id', 'slug', 'full_name'):
+               pass
+            else:
+               print(field.name.strip()=='familycards.FamilyMember.slug')
+               print(getattr(member, field.name))
+               row.append(getattr(member, field.name))
+            print(row)
+         writer.writerow(row)
+
+def export_csv(request):
+   filename = 'exported_family.csv'
+   generate_csv(filename)
+   fl = open(filename, 'r')
+   mime_type, _ = mimetypes.guess_type(filename)
+   response = HttpResponse(fl, content_type=mime_type)
+   response['Content-Disposition'] = f"attachment; filename={filename}"
+   return response
+
 
 
 # def view_category(request, slug):

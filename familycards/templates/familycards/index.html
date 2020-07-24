@@ -10,13 +10,14 @@
        {% endfor %}
        </ul>
    {% else %}
-       <p>no family members added</p>
+       <p>No family members added. You can test the app with Hesse Family</p>
    {% endif %}
 </div>
 
 
 <div class ='members-functions'>
     <li><a href="{% url 'delete_all' %}">delete all family members</a></li>
+    <li><a href="{% url 'export_csv'%}">export all</a></li>
 </div>
 
 

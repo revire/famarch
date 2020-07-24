@@ -15,6 +15,7 @@ urlpatterns = [
     path('member/<slug>/edit', views.edit_member, name='edit_member'),
     path('member/<slug>/delete', views.delete_member, name='delete_member'),
     path('tree', TreeView.as_view(), name='view_tree'),
+    path('export_csv', views.export_csv, name='export_csv')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
