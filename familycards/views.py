@@ -179,9 +179,11 @@ def generate_csv(request):
             print(field.name.strip())
             if field.name in ('id', 'slug', 'full_name'):
                pass
+            elif field.name in ('parents', 'partners'):
+               print('THE LIST', type(getattr(member, field.name)))
+               row.append(', '.join(getattr(member, field.name)))
             else:
-               print(field.name.strip()=='familycards.FamilyMember.slug')
-               print(getattr(member, field.name))
+               # print(getattr(member, field.name))
                row.append(getattr(member, field.name))
             print(row)
          writer.writerow(row)

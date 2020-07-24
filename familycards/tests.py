@@ -1,3 +1,3 @@
-from django.test import TestCase
+heroku config:set DISABLE_COLLECTSTATIC=1from django.test import TestCase
 
 # Create your tests here.
