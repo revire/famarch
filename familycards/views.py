@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.conf import settings
 from django.views.generic import TemplateView
@@ -40,10 +40,10 @@ class IndexView(TemplateView):
       context = {'family_members': FamilyMember.objects.all().order_by('first_name')}
       return render(request, self.template_name, context)
 
-   def delete_all(self, request):
-      FamilyMember.objects.all().delete()
-      # context = {'message': f'{count_members} were deleted.'}
-      return redirect('')
+def delete_all(request):
+   FamilyMember.objects.all().delete()
+   # context = {'message': f'{count_members} were deleted.'}
+   return redirect('../')
 
 
 class MembersView(TemplateView):

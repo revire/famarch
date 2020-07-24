@@ -2,7 +2,6 @@
 {% block content %}
 
 <div class="index-familymembers-az">
-
    {% if family_members %}
        <ul>
        {% for family_member in family_members %}
@@ -13,16 +12,13 @@
    {% else %}
        <p>no family members added</p>
    {% endif %}
-
-
 </div>
 
 
 <div class ='members-functions'>
-    <li><a href="{% url 'delete_all' %}">delete all members</a></li>
-
-
+    <li><a href="{% url 'delete_all' %}">delete all family members</a></li>
 </div>
+
 
 {% endblock %}
 

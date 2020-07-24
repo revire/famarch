@@ -5,17 +5,24 @@
     padding-left: 30px;
 }
 
-.base-add-member{
+.base-add-member {
     color: #000000;
     font-family: 'Bebas Neue', cursive;
     font-size: 70pt;
     padding-left: 30px;
 }
 
+
+.members-functions a {
+    padding-left: 30px;
+    font-family: 'Nanum Gothic Coding', cursive;
+}
+
 .index-familymembers-az, .index-familymembers-az p {
     padding-left: 30px;
     font-family: 'Nanum Gothic Coding', cursive;
 }
+
 
 .add-new-members {
     padding-left: 30px;
