@@ -1,0 +1,55 @@
+.base {
+    color: #3D497C;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 70pt;
+    padding-left: 30px;
+}
+
+.base-add-member {
+    color: #000000;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 70pt;
+    padding-left: 30px;
+}
+
+
+.members-functions li {
+    padding-left: 30px;
+    font-family: 'Bebas Neue', cursive;
+}
+
+.index-familymembers-az, .index-familymembers-az p {
+    padding-left: 30px;
+    font-family: 'Nanum Gothic Coding', cursive;
+}
+
+
+.add-new-members {
+    padding-left: 30px;
+    color: #000000;
+    font-family: 'Nanum Gothic Coding', cursive;
+    font-size: 15pt;
+}
+
+.add-new-members h3 {
+    font-family: 'Bebas Neue', cursive;
+}
+
+
+.member-info {
+    padding-left: 40px;
+    color: #000000;
+    font-family: 'Nanum Gothic Coding', monospace;
+}
+
+.member-info h2 {
+    color: #000000;
+    font-size: 20pt;
+    font-family: 'Nanum Gothic Coding', monospace;
+}
+
+
+body {
+    padding-left: 30px;
+}
+

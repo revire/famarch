@@ -34,26 +34,26 @@ class UploadFileForm(forms.ModelForm):
         ]
 
 class UploadOnePerson(forms.ModelForm):
-    first_name = forms.CharField(max_length=200, required=True)
-    last_name = forms.CharField(max_length=200, required=True)
-    other_names = forms.CharField(max_length=200, required=False)
-    birth_name = forms.CharField(max_length=200, required=False)
-    date_of_birth = forms.DateField(widget=forms.DateInput(format='%Y-%m-%d'),
-                                    input_formats=('%Y-%m-%d',),
-                                    required=True)
-    city_of_birth = forms.CharField(max_length=200, required=False)
-    country_of_birth = forms.CharField(max_length=200, required=False)
-    date_of_death = forms.DateField(widget=forms.DateInput(format='%Y-%m-%d'),
-                                    input_formats=('%Y-%m-%d',),
-                                    required=False)
-    city_of_birth = forms.CharField(max_length=200, required=False)
-    city_of_death = forms.CharField(max_length=200, required=False)
-    country_of_death = forms.CharField(max_length=200, required=False)
-    education = forms.CharField(max_length=200, required=False)
-    job = forms.CharField(max_length=200, required=False)
-    comments = forms.CharField(max_length=500, required=False)
-    parents = MembersField(max_length=500, required=False)
-    partners = MembersField(max_length=500, required=False)
+    # first_name = forms.CharField(max_length=200, required=True)
+    # last_name = forms.CharField(max_length=200, required=True)
+    # other_names = forms.CharField(max_length=200, required=False)
+    # birth_name = forms.CharField(max_length=200, required=False)
+    # date_of_birth = forms.DateField(widget=forms.DateInput(format='%Y-%m-%d'),
+    #                                 input_formats=('%Y-%m-%d',),
+    #                                 required=True)
+    # city_of_birth = forms.CharField(max_length=200, required=False)
+    # country_of_birth = forms.CharField(max_length=200, required=False)
+    # date_of_death = forms.DateField(widget=forms.DateInput(format='%Y-%m-%d'),
+    #                                 input_formats=('%Y-%m-%d',),
+    #                                 required=False)
+    # city_of_birth = forms.CharField(max_length=200, required=False)
+    # city_of_death = forms.CharField(max_length=200, required=False)
+    # country_of_death = forms.CharField(max_length=200, required=False)
+    # education = forms.CharField(max_length=200, required=False)
+    # job = forms.CharField(max_length=200, required=False)
+    # comments = forms.CharField(max_length=500, required=False)
+    # parents = MembersField(max_length=500, required=False)
+    # partners = MembersField(max_length=500, required=False)
 
     class Meta:
         model = FamilyMember

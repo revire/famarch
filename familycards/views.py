@@ -102,9 +102,9 @@ class MembersView(TemplateView):
          print('the uploads slug', one_person_upload.slug)
          try:
             one_person_upload.save()
-            upload_messages = f'{created} uploaded'
+            upload_messages = f'{one_person_upload} uploaded'
          except:
-            upload_message = f'{created} already in database.'
+            upload_message = f'{one_person_upload} already in database.'
          one_person_upload = UploadOnePerson()
       else:
          one_person_upload = UploadOnePerson()
@@ -119,7 +119,6 @@ class MembersView(TemplateView):
 
 def view_member(request, slug):
    member = get_object_or_404(FamilyMember, slug=slug)
-   print(FamilyMember.parents)
    parents_list = []
    partners_list = []
    if member.parents != ['']:
@@ -136,15 +135,13 @@ def view_member(request, slug):
 
 def edit_member(request, slug):
    member = get_object_or_404(FamilyMember, slug=slug)
-
    if request.method == "POST":
       form = UploadOnePerson(request.POST, instance=member)
       if form.is_valid():
          member = form.save(commit=False)
          member.save()
-         # return render(request, 'familycards/view_member.html', slug=member.slug)
-      context = {'member': member}
-      return redirect(request, 'familycards/view_member.html', context)
+         context = {'member': member, 'slug':member.slug}
+         return redirect('view_member', slug=member.slug)
    else:
       form = UploadOnePerson(instance=member)
    context = {'form': form, 'member':member}
@@ -154,7 +151,6 @@ def edit_member(request, slug):
 def delete_member(request, slug):
    member = get_object_or_404(FamilyMember, slug=slug)
    delete_message = None
-   print('here we are')
    print(member)
    member.delete()
    delete_message = f'{member} is deleted.'

@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 from django.urls import reverse
 import json
@@ -28,21 +29,21 @@ class MembersField(models.TextField):
 class FamilyMember(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
-    other_names = models.CharField(max_length=200, blank=True)
-    birth_name = models.CharField(max_length=200, blank=True)
+    other_names = models.CharField(max_length=200)
+    birth_name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=100, unique=True)
-    date_of_birth = models.DateField(blank=True)
-    city_of_birth = models.CharField(max_length=200, blank=True)
-    country_of_birth = models.CharField(max_length=200, blank=True)
-    date_of_death = models.DateField(blank=True)
-    city_of_death = models.CharField(max_length=200, blank=True)
-    country_of_death = models.CharField(max_length=200, blank=True)
-    education = models.CharField(max_length=200, blank=True)
-    job = models.CharField(max_length=200, blank=True)
-    comments = models.CharField(max_length=500, blank=True)
-    parents = MembersField(blank=True)
-    partners = MembersField(blank=True)
-    full_name = models.CharField(blank=True, max_length=200)
+    date_of_birth = models.DateField()
+    city_of_birth = models.CharField(max_length=200)
+    country_of_birth = models.CharField(max_length=200)
+    date_of_death = models.DateField()
+    city_of_death = models.CharField(max_length=200)
+    country_of_death = models.CharField(max_length=200)
+    education = models.CharField(max_length=200)
+    job = models.CharField(max_length=200)
+    comments = models.CharField(max_length=500)
+    parents = MembersField()
+    partners = MembersField()
+    full_name = models.CharField(max_length=200)
 
     # def set_full_name(self, x):
     #     self.full_name = f'{self.last_name} {self.first_name}'

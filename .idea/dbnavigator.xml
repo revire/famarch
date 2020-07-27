@@ -23,16 +23,25 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes />
+    <loaded-nodes>
+      <connection connection-id="4847e03c-8871-4b1f-a4b5-81f4407f3181">
+        <schema name="main" object-types="view, table" />
+      </connection>
+    </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="4847e03c-8871-4b1f-a4b5-81f4407f3181">
-      <console name="famarch_db" type="STANDARD" schema="main" session="Main"><![CDATA[UPDATE "familycards_familymember" SET "first_name" = 'Bruno', "last_name" = 'Hesse',
-"other_names" = '', "birth_name" = '', "slug" = 'bruno_hesse_1905-01-01-000000', "date_of_birth" = '1905-01-01',
-"city_of_birth" = 'Zurich', "country_of_birth" = 'Switzerland', "date_of_death" = '1999-01-01',
-"city_of_death" = '', "country_of_death" = '', "education" = '', "job" = 'Asrtist',
-"comments" = '', "parents" = '', "partners" = '', "full_name" = 'Bruno Hesse' WHERE
-"familycards_familymember"."id" = 7]]></console>
+      <console name="famarch_db" type="STANDARD" schema="main" session="Main"><![CDATA[--UPDATE "familycards_familymember" SET "first_name" = 'Bruno', "last_name" = 'Hesse',
+--"other_names" = '', "birth_name" = '', "slug" = 'bruno_hesse_1905-01-01-000000', "date_of_birth" = '1905-01-01',
+--"city_of_birth" = 'Zurich', "country_of_birth" = 'Switzerland', "date_of_death" = '1999-01-01',
+--"city_of_death" = '', "country_of_death" = '', "education" = '', "job" = 'Asrtist',
+--"comments" = '', "parents" = '', "partners" = '', "full_name" = 'Bruno Hesse' WHERE
+--"familycards_familymember"."id" = 7
+
+
+
+
+select * from familycards_familymember;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -43,6 +52,11 @@
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="4847e03c-8871-4b1f-a4b5-81f4407f3181" dataset="main.familycards_datafile" active-filter-id="" />
+    <filter-actions connection-id="4847e03c-8871-4b1f-a4b5-81f4407f3181" dataset="main.familycards_familymember" active-filter-id="4ef832fe-68ea-48ea-89be-042d5824e699">
+      <filter id="4ef832fe-68ea-48ea-89be-042d5824e699" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="id" operator="=" value="" active="true" />
+      </filter>
+    </filter-actions>
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
