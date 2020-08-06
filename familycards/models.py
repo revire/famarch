@@ -20,9 +20,6 @@ class MembersField(models.TextField):
 
         if value is None:
             return value
-
-        #FamilyMember.objects.get(first_name)
-
         return value.split(', ')
 
 

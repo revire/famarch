@@ -4,15 +4,6 @@
 <div class="member-info">
 
     <h2>{% block head_title %}{{ member.first_name }} {{ member.last_name }}{% endblock %}</h2><br>
-
-
-    <a class="btn btn-default" href="{% url 'edit_member' slug=member.slug %}">
-        <span class="glyphicon glyphicon-pencil"></span>
-    </a>
-    <a class="btn btn-default" href="{% url 'delete_member' slug=member.slug %}">
-        <span class="glyphicon glyphicon-remove"></span>
-    </a> <br><br>
-
     <p><b>Name</b>: {{ member.first_name }} {{ member.other_names }} {{ member.last_name }}, ({{ member.birth_name }})<br>
     <b>Date of birth</b>: {{ member.date_of_birth }}<br>
     <b>Place of birth</b>: {{ member.city_of_birth }}, {{ member.country_of_birth }}<br>
@@ -26,7 +17,7 @@
         {% if parents %}
             <b>Parents</b>:
             {% for parent in parents %}
-                <li><a href="{% url 'view_member' slug=parent.slug %}">{{ parent.first_name }} {{ parent.last_name }}</a></li>
+                <li><a href="{% url 'view_member' slug=parent.slug %}">{{ parent.full_name}}</a></li>
              {% endfor %}
         {% else %}
             Parents Unknown<br>
@@ -42,7 +33,13 @@
             Partners Unknown<br>
         {% endif %}
     </p>
-
+    <br>
+        <a class="btn btn-default" href="{% url 'edit_member' slug=member.slug %}">
+        <span class="glyphicon glyphicon-pencil"></span>
+    </a>
+    <a class="btn btn-default" href="{% url 'delete_member' slug=member.slug %}">
+        <span class="glyphicon glyphicon-remove"></span>
+    </a>
 
 
 </div>

@@ -35,11 +35,11 @@ def handle_date(d):
    return correct_date
 
 class IndexView(TemplateView):
-   template_name = 'familycards/index.html'
 
    def get(self, request):
       context = {'family_members': FamilyMember.objects.all().order_by('first_name')}
-      return render(request, self.template_name, context)
+      return render(request, 'familycards/index.html', context)
+
 
 class MembersView(TemplateView):
 
@@ -61,31 +61,36 @@ class MembersView(TemplateView):
          with open(f.name) as f:
             reader = csv.reader(f)
             for row in reader:
-               created = FamilyMember(
-                  first_name=row[0],
-                  last_name=row[1],
-                  other_names=row[2],
-                  birth_name=row[3],
-                  date_of_birth=handle_date(row[4]),
-                  city_of_birth=row[5],
-                  country_of_birth=row[6],
-                  date_of_death=handle_date(row[7]),
-                  city_of_death=row[8],
-                  country_of_death=row[9],
-                  education=row[10],
-                  job=row[11],
-                  comments=row[12],
-                  parents=str(row[13]),
-                  partners=(row[14]),
-                  slug=slugify(f'{row[0]}_{row[1]}_{handle_date(row[4])}'),
-                  full_name=f'{row[0]} {row[1]}'
-               )
-               print(created, type(created))
-               try:
-                  created.save()
-                  upload_messages.append(f'{created} uploaded')
-               except:
-                  upload_messages.append(f'{created} already in database.')
+               if row[0]=='first_name':
+                  pass
+               elif row[0]=='' and row[1]=='' and row[2]=='' and row[3]=='' and row[4]=='':
+                  pass
+               else:
+                  created = FamilyMember(
+                     first_name=row[0],
+                     last_name=row[1],
+                     other_names=row[2],
+                     birth_name=row[3],
+                     date_of_birth=handle_date(row[4]),
+                     city_of_birth=row[5],
+                     country_of_birth=row[6],
+                     date_of_death=handle_date(row[7]),
+                     city_of_death=row[8],
+                     country_of_death=row[9],
+                     education=row[10],
+                     job=row[11],
+                     comments=row[12],
+                     parents=str(row[13]),
+                     partners=(row[14]),
+                     slug=slugify(f'{row[0]}_{row[1]}_{handle_date(row[4])}'),
+                     full_name=f'{row[0]} {row[1]}'
+                  )
+                  print(created, type(created))
+                  try:
+                     created.save()
+                     upload_messages.append(f'{created} uploaded')
+                  except:
+                     upload_messages.append(f'{created} already in database.')
          family_members_upload = UploadFileForm()
       else:
          family_members_upload = UploadFileForm()
@@ -100,11 +105,13 @@ class MembersView(TemplateView):
          one_person_upload.slug = slugify(f'{one_person_form.cleaned_data["first_name"]}_{one_person_form.cleaned_data["last_name"]}_{one_person_form.cleaned_data["date_of_birth"]}')
          one_person_upload.full_name = f'{one_person_form.cleaned_data["first_name"]} {one_person_form.cleaned_data["last_name"]}'
          print('the uploads slug', one_person_upload.slug)
-         try:
-            one_person_upload.save()
-            upload_messages = f'{one_person_upload} uploaded'
-         except:
-            upload_message = f'{one_person_upload} already in database.'
+         # try:
+         one_person_upload.parents = str(one_person_upload.parents)
+         one_person_upload.partners = str(one_person_upload.partners)
+         one_person_upload.save()
+         upload_messages = f'{one_person_upload} uploaded'
+         # except:
+         upload_message = f'{one_person_upload} already in database.'
          one_person_upload = UploadOnePerson()
       else:
          one_person_upload = UploadOnePerson()
@@ -121,14 +128,17 @@ def view_member(request, slug):
    member = get_object_or_404(FamilyMember, slug=slug)
    parents_list = []
    partners_list = []
-   if member.parents != ['']:
-      for parent in member.parents:
-         p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
-         parents_list.append(get_object_or_404(FamilyMember, slug=p.slug))
-   if member.partners != ['']:
-      for partner in member.partners:
-         p = FamilyMember.objects.filter(first_name__startswith=partner.split(' ')[0])[0]
-         partners_list.append(get_object_or_404(FamilyMember, slug=p.slug))
+   try:
+      if member.parents != ['']:
+         for parent in member.parents:
+            p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
+            parents_list.append(get_object_or_404(FamilyMember, slug=p.slug))
+      if member.partners != ['']:
+         for partner in member.partners:
+            p = FamilyMember.objects.filter(first_name__startswith=partner.split(' ')[0])[0]
+            partners_list.append(get_object_or_404(FamilyMember, slug=p.slug))
+   except IndexError:
+      pass
    context = {'member': member, 'parents':parents_list, 'partners':partners_list}
    return render(request, 'familycards/view_member.html', context)
 
@@ -139,6 +149,8 @@ def edit_member(request, slug):
       form = UploadOnePerson(request.POST, instance=member)
       if form.is_valid():
          member = form.save(commit=False)
+         member.parents = str(member.parents)
+         member.partners = str(member.partners)
          member.save()
          context = {'member': member, 'slug':member.slug}
          return redirect('view_member', slug=member.slug)
@@ -164,11 +176,12 @@ def delete_all(request):
    return redirect('../')
 
 
-def generate_csv(request):
+def generate_csv(request, filename):
    family_members = FamilyMember.objects.all()
    fields = FamilyMember._meta.fields
-   with open('exported_family.csv', 'w') as f:
+   with open(filename, 'w') as f:
       writer = csv.writer(f)
+      writer.writerow(['first_name','last_name','other_names','birth_names','date_of_birth','city_of_birth','country_of_birth','date_of_death','city_of_death','country_of_death','education','job','comments','parents','partners'])
       for member in family_members:
          row = []
          for field in fields:
@@ -184,15 +197,20 @@ def generate_csv(request):
             print(row)
          writer.writerow(row)
 
-def export_csv(request):
-   filename = 'exported_family.csv'
-   generate_csv(filename)
+def export_csv(request, filename):
+   filename = filename
+   generate_csv(request, filename)
    fl = open(filename, 'r')
    mime_type, _ = mimetypes.guess_type(filename)
    response = HttpResponse(fl, content_type=mime_type)
    response['Content-Disposition'] = f"attachment; filename={filename}"
    return response
 
+
+
+def about(request):
+   context = {'pam': 'pam'}
+   return render(request, 'familycards/about.html', context)
 
 
 # def view_category(request, slug):

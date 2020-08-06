@@ -1,0 +1,29 @@
+{% extends 'familycards/base.html' %}
+{% block content %}
+
+<div class="about-description">
+    <p>You can import .csv file with data about your relatives.</p>
+    <p>CSV file consists of the following columns:
+        <li>first_name</li>
+        <li>last_name</li>
+        <li>other_names</li>
+        <li>birth_names</li>
+        <li>date_of_birth</li>
+        <li>city_of_birth</li>
+        <li>country_of_birth</li>
+        <li>date_of_death</li>
+        <li>city_of_death</li>
+        <li>country_of_death</li>
+        <li>education</li>
+        <li>job</li>
+        <li>comments</li>
+        <li>parents</li>
+        <li>partners</li>
+        <li>full_name</li>
+    </p>
+    <p>here is a <a href="{% url 'export_csv' filename='header.csv' %}">.csv file</a> with the given header</p>
+    <p>here is a an example of .csv file with prefilled data about <a href="{% url 'export_csv' filename='hesse_family.csv' %}">Hermann Hesse's family</a></p>
+
+</div>
+
+{% endblock %}
