@@ -7,5 +7,6 @@ https://famarch.herokuapp.com/
 To import family members:
 - add manually person per person
 - upload a bulk of people from csv file
-To test it you can use hesse_family.csv
+To test it proceed here: 
+ttps://famarch.herokuapp.com/about
 
