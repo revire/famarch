@@ -1,21 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
-from django.conf import settings
 from django.views.generic import TemplateView
 from django.template.defaultfilters import slugify
-from django.http import JsonResponse
-from django.core import serializers
 
 from .models import FamilyMember
 from .forms import UploadFileForm, UploadOnePerson
 from .draw_tree import get_pic_name, get_list_of_parents
-from .media import *
+# from .media import *
 
 import os
 import csv
 import datetime
-import json
 import mimetypes
 
 
@@ -218,33 +213,21 @@ def about(request):
 #    context = {'category': category, 'posts': Blog.objects.filter(category=category)[:5]}
 #    return render(request, 'imnebel/view_category.html', context)
 
-class TreeView(TemplateView):
-   # def view_tree(request):
-   #    pass
-   # members = FamilyMember.objects.all()
-   # print('got members')
-   # tree = get_pic_name(members)
-   # print('got tree')
-   # context = {'tree': tree}
-   # return render(request, 'familycards/view_tree.html', context)
+# class TreeView(TemplateView):
+def view_tree(request):
+   members = FamilyMember.objects.all()
+   print('got members')
+   tree = get_pic_name(members)
+   print('got tree')
+   context = {'tree': tree}
+   return render(request, 'familycards/view_tree.html', context)
+      #
+   # def get(self, request):
+   #    family_members = FamilyMember.objects.all()
+   #    print('got members')
+   #    context = {'family_members': family_members}
+   #    return render(request, 'familycards/view_tree.html', context)
 
-   def get(self, request):
-      family_members = FamilyMember.objects.all()
-      print('got members')
-      context = {'family_members': family_members}
-      return render(request, 'familycards/view_tree.html', context)
-
-   # def post(self, request, slug):
-   #    if self.is_ajax and self.request.method == 'POST':
-   #       family_member = FamilyMember.object.get(slug=slug)
-   #       parents_dict = get_list_of_parents(family_member, FamilyMember)
-   #       family_members = FamilyMember.objects.all()
-   #       ser_instance = serializers.serialize('json', [parents_dict, family_members])
-   #       #context = {'parents_dict':parents_dict, 'family_member':family_member, 'family_members':family_members}
-   #       return JsonResponse({"instance": ser_instance}, status=200)
-   #       # return render(request, 'familycards/view_tree.html', context)
-   #
-   #
 
 
 

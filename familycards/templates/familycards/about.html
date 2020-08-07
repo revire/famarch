@@ -3,7 +3,10 @@
 
 <div class="about-description">
     <p>You can import .csv file with data about your relatives.</p>
-    <p>CSV file consists of the following columns:
+    <p>Here is a <a href="{% url 'export_csv' filename='header.csv' %}">.csv file</a> with a header</p>
+    <p>Here is a an example of .csv file with prefilled data about <a href="{% url 'export_csv' filename='hesse_family.csv' %}">Hermann Hesse's family</a></p>
+
+    <p>The header consits of the following columns:
         <li>first_name</li>
         <li>last_name</li>
         <li>other_names</li>
@@ -20,8 +23,6 @@
         <li>parents</li>
         <li>partners</li>
     </p>
-    <p>here is a <a href="{% url 'export_csv' filename='header.csv' %}">.csv file</a> with the given header</p>
-    <p>here is a an example of .csv file with prefilled data about <a href="{% url 'export_csv' filename='hesse_family.csv' %}">Hermann Hesse's family</a></p>
 
 </div>
 

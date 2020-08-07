@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.urls import path
-from .views import IndexView, MembersView, TreeView
+from .views import IndexView, MembersView
 
 from . import views
 
@@ -15,7 +15,7 @@ urlpatterns = [
     path('member/<slug>', views.view_member, name='view_member'),
     path('member/<slug>/edit', views.edit_member, name='edit_member'),
     path('member/<slug>/delete', views.delete_member, name='delete_member'),
-    path('tree', TreeView.as_view(), name='view_tree'),
+    path('tree', views.view_tree, name='view_tree'),
     path('export_csv/<filename>', views.export_csv, name='export_csv')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

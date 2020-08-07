@@ -56,17 +56,27 @@ class FamilyMember(models.Model):
 
     def get_list_of_parents(self):
         parents_list = []
-        for parent in self.parents:
-            p = FamilyMember.objects.filter(first_name__startswith=parent.split(' ')[0])[0]
-            parents_list.append(p)
+        try:
+            for parent in self.parents:
+                p = FamilyMember.objects.filter(full_name=parent)
+                if len(p) != 0:
+                    parents_list.append(p[0])
+        except TypeError:
+            pass
         return parents_list
 
 
     def get_list_of_partners(self):
         partners_list = []
-        for partner in self.partners:
-            p = FamilyMember.objects.filter(first_name__startswith=partner.split(' ')[0])[0]
-            partners_list.append(p)
+        print(self.partners)
+        try:
+            for partner in self.partners:
+                p = FamilyMember.objects.filter(full_name=partner)
+                partners_list.append(p[0])
+        except TypeError:
+            pass
+        except IndexError:
+            pass
         return partners_list
 
 

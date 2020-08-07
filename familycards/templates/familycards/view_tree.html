@@ -1,5 +1,15 @@
 {% extends 'familycards/base.html' %}
 
-{% block content %}
 
+{% block content %}
+{% load static %}
+<div class='family-tree'>
+<img src="{% static tree %}" />
+</div>
+
+
+
+
+
+{% include 'familycards/footer.html' %}
 {% endblock %}

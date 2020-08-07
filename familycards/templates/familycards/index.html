@@ -6,21 +6,25 @@
        <ul>
        {% for family_member in family_members %}
            {% ifchanged family_member.first_name.0 %}<h4>{{family_member.first_name.0}}</h4>{% endifchanged%}
+           <div class="az-list">
            <li><a href="{% url 'view_member' slug=family_member.slug %}">{{ family_member.first_name }} {{ family_member.last_name }}</a></li>
+           </div>
        {% endfor %}
        </ul>
    {% else %}
     No family members added. See <a href="{% url 'about' %}"> how to use the app</a></p>
    {% endif %}
 </div>
+<br>
 
 
 <div class ='members-functions'>
-    <li><a href="{% url 'delete_all' %}">delete all</a></li>
-    <li><a href="{% url 'export_csv' filename='export_family.csv' %}">export all</a></li>
+    <h4><a href="{% url 'export_csv' filename='export_family.csv' %}">Export all</a></h4>
+    <h4><a href="{% url 'delete_all' %}">Delete All</a></h4><br>
 
 </div>
 
 
-{% endblock %}
 
+{% include 'familycards/footer.html' %}
+{% endblock %}
