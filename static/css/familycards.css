@@ -1,37 +1,27 @@
-.base {
+.base h3, .base h2 {
     color: #3D497C;
     font-family: 'Bebas Neue', cursive;
-    font-size: 70pt;
-    padding-left: 30px;
+    font-size: 20pt;
 }
 
-.base-add-member {
-    color: #000000;
+.base-add-member h3 {
     font-family: 'Bebas Neue', cursive;
-    font-size: 70pt;
-    padding-left: 30px;
-}
-
-.base-about {
+    font-size: 20pt;
     color: #000000;
-    font-family: 'Bebas Neue', cursive;
-    font-size: 70pt;
-    padding-left: 30px;
 }
 
+.members-functions h4 {
+    padding-left: 30px;
+    font-family: 'Bebas Neue', cursive;
+}
 
-.about-description p, li {
-    padding-left: 40px;
+.index-familymembers-az {
+    padding-left: 30px;
     font-family: 'Nanum Gothic Coding', cursive;
 }
 
-.members-functions li {
-    padding-left: 30px;
-    font-family: 'Bebas Neue', cursive;
-}
-
-.index-familymembers-az, .index-familymembers-az p {
-    padding-left: 30px;
+.az-list {
+    padding-left: 40px;
     font-family: 'Nanum Gothic Coding', cursive;
 }
 
@@ -39,7 +29,7 @@
     padding-left: 30px;
     color: #000000;
     font-family: 'Nanum Gothic Coding', cursive;
-    font-size: 15pt;
+    font-size: 10pt;
 }
 
 .add-new-members h3 {
@@ -59,10 +49,23 @@
     font-family: 'Nanum Gothic Coding', monospace;
 }
 
+.about-description {
+    color: #000000;
+    font-family: 'Nanum Gothic Coding', cursive;
+    font-size: 15t;
+    padding-left: 40px;
+}
 
+
+.footer-about h4 {
+    padding-left: 30px;
+    font-family: 'Bebas Neue', cursive;
+}
 
 
 body {
-    padding-left: 30px;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
 }
 
