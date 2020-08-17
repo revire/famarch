@@ -5,7 +5,7 @@ from django.template.defaultfilters import slugify
 
 from .models import FamilyMember
 from .forms import UploadFileForm, UploadOnePerson
-from .draw_tree import get_pic_name, get_list_of_parents
+# from .draw_tree import get_pic_name, get_list_of_parents
 # from .media import *
 
 import os
@@ -215,10 +215,11 @@ def about(request):
 
 # class TreeView(TemplateView):
 def view_tree(request):
-   members = FamilyMember.objects.all()
-   print('got members')
-   tree = get_pic_name(members)
-   print('got tree')
+   # members = FamilyMember.objects.all()
+   # print('got members')
+   # tree = get_pic_name(members)
+   # print('got tree')
+   tree = "Sorry, technical issues. See the localhost version from github"
    context = {'tree': tree}
    return render(request, 'familycards/view_tree.html', context)
       #
