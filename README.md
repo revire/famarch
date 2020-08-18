@@ -10,4 +10,5 @@ To import family members:
 To test it proceed here: 
 ttps://famarch.herokuapp.com/about
 
-![Added Family Members] (readme_pictures/index.png)
+![Added Family Members] 
+(readme_pictures/index.png)
