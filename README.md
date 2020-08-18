@@ -10,5 +10,7 @@ To import family members:
 To test it proceed here: 
 ttps://famarch.herokuapp.com/about
 
-![Added Family Members] 
-(https://github.com/revire/famarch/blob/master/readme_pictures/index.png)
+![Added Family Members](/readme_pictures/index.png)
+![Family Member Card](/readme_pictures/hermann_hesse.png)
+![Add Family Member](/readme_pictures/add_member.png)
+![Family Graph](/readme_pictures/family_graph.png)
