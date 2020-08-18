@@ -1,8 +1,7 @@
 
-# Famarch - FamilyCards
+# FamilyCards
 
-Try the program here:
-https://famarch.herokuapp.com/
+Try the program here: famarch.herokuapp.com
 
 To import family members:
 - add manually person per person
