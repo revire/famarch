@@ -11,4 +11,4 @@ To test it proceed here:
 ttps://famarch.herokuapp.com/about
 
 ![Added Family Members] 
-(readme_pictures/index.png)
+(https://github.com/revire/famarch/blob/master/readme_pictures/index.png)
