@@ -1,9 +1,6 @@
 import pygraphviz as pgv
-#
-#
-#
-
 from .models import FamilyMember
+
 
 def get_list_of_parents(family_member, FamilyMember, parents = {}):
     print(family_member, family_member.parents)
@@ -22,69 +19,53 @@ def get_list_of_parents(family_member, FamilyMember, parents = {}):
     return parents
 
 
-
-
-def get_parents_dict():
+def get_parents_dict(bond):
     bonds = {}
+    relatives = []
     for family_member in FamilyMember.objects.all():
-        print(family_member)
-        print(family_member.parents)
-        for parent in family_member.get_list_of_parents():
-            if parent not in bonds.keys():
-                bonds[parent] = [family_member]
+        if bond == 'parents':
+            relatives = family_member.get_list_of_parents()
+        elif bond == 'partners':
+            relatives = family_member.get_list_of_partners()
+        for relative in relatives:
+            if relative not in bonds.keys():
+                bonds[relative] = [family_member]
             else:
-                bonds[parent].append(family_member)
-    print(bonds)
+                bonds[relative].append(family_member)
     return bonds
-
-
-
-def get_partners_dict():
-    bonds = {}
-    for family_member in FamilyMember.objects.all():
-        print(family_member)
-        print(family_member.partners)
-        for partner in family_member.get_list_of_partners():
-            if partner not in bonds.keys():
-                bonds[partner] = [family_member]
-            else:
-                bonds[partner].append(family_member)
-    print(bonds)
-    return bonds
-
 
 def make_graph(parents, partners):
     a = pgv.AGraph(directed=True, strict=True)
+    a.node_attr['shape']='box'
     a.edge_attr.update(len='2.0')
-    print('making graphs, parents')
+    print('Creating parents graph:')
     for parent in parents:
         if parent is not None:
             for child in parents[parent]:
                 if child is not None:
-                    print(f'parent: {parent}, child: {child}')
+                    print(f'Parent: {parent}, Child: {child}')
                     a.add_edge(f'{parent}', f'{child}')
 
-    print('making graphs, parents')
+    print('Creating partners graph:')
     for partner in partners:
         if partner is not None:
             for other_partner in partners[partner]:
                 if other_partner is not None:
-                    print(f'parent: {partner}, child: {other_partner}')
+                    print(f'Partner: {partner}, Another Partner: {other_partner}')
                     a.add_edge(f'{partner}', f'{other_partner}', directed=False)
+    if a is None:
+        print('Nothing to add')
+    else:
+        a.layout()
+        a.draw('static/family_graph.png')
+        print('The family_graph.png is created')
 
 
-
-    pic_name = 'here.png'
-    a.layout()
-    a.draw(f'static/{pic_name}')
-    print(pic_name)
-    return pic_name
-
-
-def get_pic_name(FamilyMember):
-    parents_dict = get_parents_dict()
-    partners_dict = get_partners_dict()
-    pic_name = make_graph(parents_dict, partners_dict)
-    return pic_name
-
-
+def generate_tree():
+    if len(FamilyMember.objects.all()) > 0:
+        parents_dict = get_parents_dict('parents')
+        partners_dict = get_parents_dict('partners')
+        make_graph(parents_dict, partners_dict)
+    else:
+        print('Nothing to add')
+    return 'family_graph.png'

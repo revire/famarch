@@ -1,35 +1,39 @@
+"""Functions of the app"""
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import TemplateView
 from django.template.defaultfilters import slugify
-
-from .models import FamilyMember
-from .forms import UploadFileForm, UploadOnePerson
-from .draw_tree import get_pic_name, get_list_of_parents
-# from .media import *
 
 import os
 import csv
 import datetime
 import mimetypes
 
+from .models import FamilyMember
+from .forms import UploadFileForm, UploadOnePerson
+from .draw_tree import generate_tree
+# from .media import *
 
-def handle_uploaded_file(f):
-   with open(f.name, 'wb+') as destination:
-      for chunk in f.chunks():
+
+def handle_uploaded_file(file):
+   """The funstion deals with uploaded files"""
+   with open(file.name, 'wb+') as destination:
+      for chunk in file.chunks():
          destination.write(chunk)
 
 
-def handle_date(d):
-   try:
-      correct_date = datetime.datetime.strptime(d, '%Y-%m-%d')
-   except:
-      print(d)
-      d = '1900-01-01'
-      correct_date = datetime.datetime.strptime(d, '%Y-%m-%d')
-   return correct_date
+def handle_date(date):
+    """The function deals with the uploaded dates"""
+    try:
+        correct_date = datetime.datetime.strptime(date, '%Y-%m-%d')
+    except ValueError:
+        date = '1900-01-01'
+        correct_date = datetime.datetime.strptime(date, '%Y-%m-%d')
+    return correct_date
+
 
 class IndexView(TemplateView):
+   """The Initial Page. Contains list of added family members and links for other pages"""
 
    def get(self, request):
       context = {'family_members': FamilyMember.objects.all().order_by('first_name')}
@@ -37,31 +41,32 @@ class IndexView(TemplateView):
 
 
 class MembersView(TemplateView):
+   '''The Family Members Card. Shows added information about the person and provides links for relatives'''
 
    def get(self, request):
       family_members_upload = UploadFileForm()
       one_person_upload = UploadOnePerson()
-      context = {'family_members': FamilyMember.objects.all()[:5], 'family_members_upload': family_members_upload, 'one_person_upload':one_person_upload}
+      context = {'family_members': FamilyMember.objects.all()[:5], \
+                 'family_members_upload': family_members_upload, \
+                 'one_person_upload': one_person_upload}
       return render(request, 'familycards/add_members.html', context)
 
-
    def post(self, request, **data):
-
       family_members_upload = None
       file = UploadFileForm(request.POST, request.FILES)
       upload_messages = []
       if file.is_valid():
-         f = request.FILES['file']
-         handle_uploaded_file(f)
-         with open(f.name) as f:
-            reader = csv.reader(f)
+         uploaded_file = request.FILES['file']
+         handle_uploaded_file(uploaded_file)
+         with open(uploaded_file.name) as uploaded_file:
+            reader = csv.reader(uploaded_file)
             for row in reader:
                if row[0]=='first_name':
                   pass
-               elif row[0]=='' and row[1]=='' and row[2]=='' and row[3]=='' and row[4]=='':
+               elif row[0] == '' and row[1] == '' and row[2] == '' and row[3] == '' and row[4] == '':
                   pass
                else:
-                  created = FamilyMember(
+                  family_member = FamilyMember(
                      first_name=row[0],
                      last_name=row[1],
                      other_names=row[2],
@@ -74,18 +79,18 @@ class MembersView(TemplateView):
                      country_of_death=row[9],
                      education=row[10],
                      job=row[11],
-                     comments=row[12],
+                     notes=row[12],
                      parents=str(row[13]),
                      partners=(row[14]),
                      slug=slugify(f'{row[0]}_{row[1]}_{handle_date(row[4])}'),
                      full_name=f'{row[0]} {row[1]}'
                   )
-                  print(created, type(created))
+                  print(family_member, type(family_member))
                   try:
-                     created.save()
-                     upload_messages.append(f'{created} uploaded')
+                     family_member.save()
+                     upload_messages.append(f'{family_member} uploaded')
                   except:
-                     upload_messages.append(f'{created} already in database.')
+                     upload_messages.append(f'{family_member} already in database.')
          family_members_upload = UploadFileForm()
       else:
          family_members_upload = UploadFileForm()
@@ -112,11 +117,10 @@ class MembersView(TemplateView):
          one_person_upload = UploadOnePerson()
 
       context = {'family_members': FamilyMember.objects.all()[:5], \
-                 'upload_messages':upload_messages, \
+                 'upload_messages': upload_messages, \
                  'family_members_upload': family_members_upload, \
                  'one_person_upload': one_person_upload}
       return render(request, 'familycards/add_members.html', context)
-
 
 
 def view_member(request, slug):
@@ -134,7 +138,9 @@ def view_member(request, slug):
             partners_list.append(get_object_or_404(FamilyMember, slug=p.slug))
    except IndexError:
       pass
-   context = {'member': member, 'parents':parents_list, 'partners':partners_list}
+   context = {'member' : member, \
+              'parents' : parents_list, \
+              'partners' : partners_list}
    return render(request, 'familycards/view_member.html', context)
 
 
@@ -147,7 +153,7 @@ def edit_member(request, slug):
          member.parents = str(member.parents)
          member.partners = str(member.partners)
          member.save()
-         context = {'member': member, 'slug':member.slug}
+         context = {'member': member, 'slug': member.slug}
          return redirect('view_member', slug=member.slug)
    else:
       form = UploadOnePerson(instance=member)
@@ -158,16 +164,14 @@ def edit_member(request, slug):
 def delete_member(request, slug):
    member = get_object_or_404(FamilyMember, slug=slug)
    delete_message = None
-   print(member)
    member.delete()
    delete_message = f'{member} is deleted.'
-   context = {'delete_message':delete_message}
-   return redirect('../../')
+   context = {'delete_message': delete_message}
+   return redirect('../../', context)
 
 
 def delete_all(request):
    FamilyMember.objects.all().delete()
-   # context = {'message': f'{count_members} were deleted.'}
    return redirect('../')
 
 
@@ -176,7 +180,11 @@ def generate_csv(request, filename):
    fields = FamilyMember._meta.fields
    with open(filename, 'w') as f:
       writer = csv.writer(f)
-      writer.writerow(['first_name','last_name','other_names','birth_names','date_of_birth','city_of_birth','country_of_birth','date_of_death','city_of_death','country_of_death','education','job','comments','parents','partners'])
+      writer.writerow(['first_name','last_name','other_names',\
+                       'birth_names','date_of_birth','city_of_birth',\
+                       'country_of_birth','date_of_death','city_of_death',\
+                       'country_of_death','education','job','notes',\
+                       'parents','partners'])
       for member in family_members:
          row = []
          for field in fields:
@@ -184,27 +192,24 @@ def generate_csv(request, filename):
             if field.name in ('id', 'slug', 'full_name'):
                pass
             elif field.name in ('parents', 'partners'):
-               print('THE LIST', type(getattr(member, field.name)))
                row.append(', '.join(getattr(member, field.name)))
             else:
-               # print(getattr(member, field.name))
                row.append(getattr(member, field.name))
             print(row)
          writer.writerow(row)
 
+
 def export_csv(request, filename):
-   filename = filename
    generate_csv(request, filename)
-   fl = open(filename, 'r')
+   generated_file = open(filename, 'r')
    mime_type, _ = mimetypes.guess_type(filename)
-   response = HttpResponse(fl, content_type=mime_type)
+   response = HttpResponse(generated_file, content_type=mime_type)
    response['Content-Disposition'] = f"attachment; filename={filename}"
    return response
 
 
-
 def about(request):
-   context = {'pam': 'pam'}
+   context = {}
    return render(request, 'familycards/about.html', context)
 
 
@@ -215,18 +220,9 @@ def about(request):
 
 # class TreeView(TemplateView):
 def view_tree(request):
-   members = FamilyMember.objects.all()
-   print('got members')
-   tree = get_pic_name(members)
-   print('got tree')
+   tree = generate_tree()
    context = {'tree': tree}
    return render(request, 'familycards/view_tree.html', context)
-      #
-   # def get(self, request):
-   #    family_members = FamilyMember.objects.all()
-   #    print('got members')
-   #    context = {'family_members': family_members}
-   #    return render(request, 'familycards/view_tree.html', context)
 
 
 

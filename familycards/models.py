@@ -37,7 +37,7 @@ class FamilyMember(models.Model):
     country_of_death = models.CharField(max_length=200)
     education = models.CharField(max_length=200)
     job = models.CharField(max_length=200)
-    comments = models.CharField(max_length=500)
+    notes = models.CharField(max_length=500)
     parents = MembersField()
     partners = MembersField()
     full_name = models.CharField(max_length=200)

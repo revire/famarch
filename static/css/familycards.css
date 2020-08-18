@@ -36,7 +36,6 @@
     font-family: 'Bebas Neue', cursive;
 }
 
-
 .member-info {
     padding-left: 40px;
     color: #000000;
@@ -52,16 +51,16 @@
 .about-description {
     color: #000000;
     font-family: 'Nanum Gothic Coding', cursive;
-    font-size: 15t;
+    font-size: 15pt;
     padding-left: 40px;
 }
 
 
 .footer-about h4 {
+    padding-top: 40px;
     padding-left: 30px;
     font-family: 'Bebas Neue', cursive;
 }
-
 
 body {
     margin: auto;
