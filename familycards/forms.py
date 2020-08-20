@@ -34,6 +34,9 @@ class UploadFileForm(forms.ModelForm):
         ]
 
 class UploadOnePerson(forms.ModelForm):
+    parents = forms.CharField(widget=forms.Textarea(attrs={'cols': 20, 'rows': 1}))
+    partners = forms.CharField(widget=forms.Textarea(attrs={'cols': 20, 'rows': 1}))
+    notes = forms.CharField(widget=forms.Textarea(attrs={'cols': 20, 'rows': 3}))
 
     class Meta:
         model = FamilyMember
@@ -42,17 +45,17 @@ class UploadOnePerson(forms.ModelForm):
             'last_name',
             'other_names',
             'birth_name',
+            'date_of_birth',
             'city_of_birth',
             'country_of_birth',
+            'date_of_death',
             'city_of_death',
             'country_of_death',
             'education',
             'job',
-            'comments',
             'parents',
             'partners',
-            'date_of_birth',
-            'date_of_death',
+            'notes',
         )
 
 
