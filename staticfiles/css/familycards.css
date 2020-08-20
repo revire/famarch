@@ -1,40 +1,40 @@
-.base {
+.base h3, .base h2 {
     color: #3D497C;
     font-family: 'Bebas Neue', cursive;
-    font-size: 70pt;
-    padding-left: 30px;
+    font-size: 20pt;
 }
 
-.base-add-member {
+.base-add-member h3 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 20pt;
     color: #000000;
-    font-family: 'Bebas Neue', cursive;
-    font-size: 70pt;
-    padding-left: 30px;
 }
 
-
-.members-functions li {
+.members-functions h4 {
     padding-left: 30px;
     font-family: 'Bebas Neue', cursive;
 }
 
-.index-familymembers-az, .index-familymembers-az p {
+.index-familymembers-az {
     padding-left: 30px;
     font-family: 'Nanum Gothic Coding', cursive;
 }
 
+.az-list {
+    padding-left: 40px;
+    font-family: 'Nanum Gothic Coding', cursive;
+}
 
 .add-new-members {
     padding-left: 30px;
     color: #000000;
     font-family: 'Nanum Gothic Coding', cursive;
-    font-size: 15pt;
+    font-size: 10pt;
 }
 
 .add-new-members h3 {
     font-family: 'Bebas Neue', cursive;
 }
-
 
 .member-info {
     padding-left: 40px;
@@ -48,8 +48,23 @@
     font-family: 'Nanum Gothic Coding', monospace;
 }
 
+.about-description {
+    color: #000000;
+    font-family: 'Nanum Gothic Coding', cursive;
+    font-size: 15pt;
+    padding-left: 40px;
+}
+
+
+.footer-about h4 {
+    padding-top: 40px;
+    padding-left: 30px;
+    font-family: 'Bebas Neue', cursive;
+}
 
 body {
-    padding-left: 30px;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
 }
 
