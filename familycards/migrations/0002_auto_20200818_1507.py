@@ -5,14 +5,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('familycards', '0001_initial'),
-    ]
+    dependencies = [("familycards", "0001_initial")]
 
     operations = [
         migrations.RenameField(
-            model_name='familymember',
-            old_name='comments',
-            new_name='notes',
-        ),
+            model_name="familymember", old_name="comments", new_name="notes"
+        )
     ]

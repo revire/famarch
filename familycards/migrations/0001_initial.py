@@ -8,40 +8,55 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='DataFile',
+            name="DataFile",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to='')),
-                ('title', models.CharField(max_length=500)),
-                ('pub_date', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("file", models.FileField(upload_to="")),
+                ("title", models.CharField(max_length=500)),
+                ("pub_date", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='FamilyMember',
+            name="FamilyMember",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=200)),
-                ('last_name', models.CharField(max_length=200)),
-                ('other_names', models.CharField(max_length=200)),
-                ('birth_name', models.CharField(max_length=200)),
-                ('slug', models.SlugField(max_length=100, unique=True)),
-                ('date_of_birth', models.DateField()),
-                ('city_of_birth', models.CharField(max_length=200)),
-                ('country_of_birth', models.CharField(max_length=200)),
-                ('date_of_death', models.DateField()),
-                ('city_of_death', models.CharField(max_length=200)),
-                ('country_of_death', models.CharField(max_length=200)),
-                ('education', models.CharField(max_length=200)),
-                ('job', models.CharField(max_length=200)),
-                ('comments', models.CharField(max_length=500)),
-                ('parents', familycards.models.MembersField()),
-                ('partners', familycards.models.MembersField()),
-                ('full_name', models.CharField(max_length=200)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=200)),
+                ("last_name", models.CharField(max_length=200)),
+                ("other_names", models.CharField(max_length=200)),
+                ("birth_name", models.CharField(max_length=200)),
+                ("slug", models.SlugField(max_length=100, unique=True)),
+                ("date_of_birth", models.DateField()),
+                ("city_of_birth", models.CharField(max_length=200)),
+                ("country_of_birth", models.CharField(max_length=200)),
+                ("date_of_death", models.DateField()),
+                ("city_of_death", models.CharField(max_length=200)),
+                ("country_of_death", models.CharField(max_length=200)),
+                ("education", models.CharField(max_length=200)),
+                ("job", models.CharField(max_length=200)),
+                ("comments", models.CharField(max_length=500)),
+                ("parents", familycards.models.MembersField()),
+                ("partners", familycards.models.MembersField()),
+                ("full_name", models.CharField(max_length=200)),
             ],
         ),
     ]
