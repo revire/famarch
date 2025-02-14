@@ -1,28 +1,22 @@
 import pygraphviz as pgv
-from .models import FamilyMember
+from models import FamilyMember
+
 
 def make_family_tree():
     graph = pgv.AGraph(
-        strict=False,
-        directed=True,
-        rankdir='TB',
-        splines='ortho',
-        bgcolor='white'
+        strict=False, directed=True, rankdir="TB", splines="ortho", bgcolor="white"
     )
 
     graph.node_attr.update(
-        shape='rectangle',
-        style='filled',
-        fillcolor='lightblue',
-        fontname='Helvetica',
-        fontsize='12.0',
-        margin='0.1'
+        shape="rectangle",
+        style="filled",
+        fillcolor="lightblue",
+        fontname="Helvetica",
+        fontsize="12.0",
+        margin="0.1",
     )
 
-    graph.edge_attr.update(
-        color='black',
-        penwidth='1.0'
-    )
+    graph.edge_attr.update(color="black", penwidth="1.0")
 
     for member in FamilyMember.objects.all():
         graph.add_node(member.full_name)
@@ -38,11 +32,13 @@ def make_family_tree():
         for partner in member.partners:
             if partner and FamilyMember.objects.filter(full_name=partner).exists():
                 # Use undirected edges for partners with a different style
-                graph.add_edge(member.full_name, partner, dir='none', color='blue', style='dashed')
+                graph.add_edge(
+                    member.full_name, partner, dir="none", color="blue", style="dashed"
+                )
 
-    graph.layout(prog='dot')
-    graph.draw("static/family_graph1.png")
-    return "family_graph1.png"
+    graph.layout(prog="dot")
+    graph.draw("familycards/media/family_graph.png")
+    return "family_graph.png"
 
 
 def generate_tree():

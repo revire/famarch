@@ -2,12 +2,13 @@ from django import forms
 from .models import DataFile, FamilyMember
 
 
-class MembersField(forms.CharField):
-    def from_db_value(self, value, expression, connection):
-        if value is None:
-            return value
-        return value.split(", ")
+def from_db_value(value, expression, connection):
+    if value is None:
+        return value
+    return value.split(", ")
 
+
+class MembersField(forms.CharField):
     def get_db_prep_value(self, value, connection, **kwargs):
         return super().get_db_prep_value(value, connection, prepared=True)
 
@@ -17,9 +18,6 @@ class MembersField(forms.CharField):
 
         if value is None:
             return value
-
-        # FamilyMember.objects.get(first_name)
-
         return value.split(", ")
 
 
