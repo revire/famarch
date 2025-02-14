@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import TemplateView
 from django.template.defaultfilters import slugify
+from django.conf import settings
 
 import os
 import csv
@@ -13,14 +14,21 @@ from .models import FamilyMember
 from .forms import UploadFileForm, UploadOnePerson
 from .draw_tree import generate_tree
 
-# from .media import *
+import logging
 
 
 def handle_uploaded_file(file):
-    """The funstion deals with uploaded files"""
-    with open(file.name, "wb+") as destination:
+    """The function deals with uploaded files"""
+    # Create the media directory if it doesn't exist
+    os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
+    file_path = os.path.join(settings.MEDIA_ROOT, file.name)
+    logging.info("Got the file_path")
+
+    with open(file_path, "wb+") as destination:
         for chunk in file.chunks():
             destination.write(chunk)
+
+    return os.path.join('media', file.name)
 
 
 def handle_date(date):
@@ -61,7 +69,8 @@ class MembersView(TemplateView):
         if file.is_valid():
             uploaded_file = request.FILES["file"]
             handle_uploaded_file(uploaded_file)
-            with open(uploaded_file.name) as uploaded_file:
+            print(f"{uploaded_file.name=}")
+            with open(os.path.join(settings.MEDIA_ROOT, uploaded_file.name)) as uploaded_file:
                 reader = csv.reader(uploaded_file)
                 for row in reader:
                     if row[0] == "first_name":
@@ -242,12 +251,6 @@ def export_csv(request, filename):
 def about(request):
     context = {}
     return render(request, "familycards/about.html", context)
-
-
-# def view_category(request, slug):
-#    category = get_object_or_404(Category, slug=slug)
-#    context = {'category': category, 'posts': Blog.objects.filter(category=category)[:5]}
-#    return render(request, 'imnebel/view_category.html', context)
 
 # class TreeView(TemplateView):
 def view_tree(request):

@@ -1,73 +1,53 @@
 import pygraphviz as pgv
 from .models import FamilyMember
 
+def make_family_tree():
+    graph = pgv.AGraph(
+        strict=False,
+        directed=True,
+        rankdir='TB',
+        splines='ortho',
+        bgcolor='white'
+    )
 
-def get_list_of_parents(family_member, FamilyMember, parents={}):
-    print(family_member, family_member.parents)
-    if len(family_member.parents) != [""]:
-        for parent in family_member.parents:
-            p = None
-            if FamilyMember.objects.filter(full_name=parent):
-                p = FamilyMember.objects.filter(full_name=parent)[0]
-                parents[p] = {}
-                get_list_of_parents(p, FamilyMember, parents[p])
-        if parents:
-            return parents
+    graph.node_attr.update(
+        shape='rectangle',
+        style='filled',
+        fillcolor='lightblue',
+        fontname='Helvetica',
+        fontsize='12.0',
+        margin='0.1'
+    )
 
-    else:
-        return parents
-    print(parents)
-    return parents
+    graph.edge_attr.update(
+        color='black',
+        penwidth='1.0'
+    )
 
+    for member in FamilyMember.objects.all():
+        graph.add_node(member.full_name)
 
-def get_parents_dict(bond):
-    bonds = {}
-    relatives = []
-    for family_member in FamilyMember.objects.all():
-        if bond == "parents":
-            relatives = family_member.get_list_of_parents()
-        elif bond == "partners":
-            relatives = family_member.get_list_of_partners()
-        for relative in relatives:
-            if relative not in bonds.keys():
-                bonds[relative] = [family_member]
-            else:
-                bonds[relative].append(family_member)
-    return bonds
+    for member in FamilyMember.objects.all():
+        for parent in member.parents:
+            if parent and FamilyMember.objects.filter(full_name=parent).exists():
+                # Draw edge from parent to child
+                graph.add_edge(parent, member.full_name)
 
+    # Add partner relationships (using different edge style)
+    for member in FamilyMember.objects.all():
+        for partner in member.partners:
+            if partner and FamilyMember.objects.filter(full_name=partner).exists():
+                # Use undirected edges for partners with a different style
+                graph.add_edge(member.full_name, partner, dir='none', color='blue', style='dashed')
 
-def make_graph(parents, partners):
-    a = pgv.AGraph(directed=True, strict=True)
-    a.node_attr["shape"] = "box"
-    a.edge_attr.update(len="2.0")
-    print("Creating parents graph:")
-    for parent in parents:
-        if parent is not None:
-            for child in parents[parent]:
-                if child is not None:
-                    print(f"Parent: {parent}, Child: {child}")
-                    a.add_edge(f"{parent}", f"{child}")
-
-    print("Creating partners graph:")
-    for partner in partners:
-        if partner is not None:
-            for other_partner in partners[partner]:
-                if other_partner is not None:
-                    print(f"Partner: {partner}, Another Partner: {other_partner}")
-                    a.add_edge(f"{partner}", f"{other_partner}", directed=False)
-    if a is None:
-        print("Nothing to add")
-    else:
-        a.layout()
-        a.draw("static/family_graph.png")
-        print("The family_graph.png is created")
+    graph.layout(prog='dot')  # 'dot' layout works well for hierarchical structures
+    graph.draw("static/family_graph.png")
+    return "family_graph.png"
 
 
 def generate_tree():
-    if len(FamilyMember.objects.all()) > 0:
-        parents_dict = get_parents_dict("parents")
-        partners_dict = get_parents_dict("partners")
-        make_graph(parents_dict, partners_dict)
+    if FamilyMember.objects.exists():
+        return make_family_tree()
     else:
-        print("Nothing to add")
-    return "family_graph.png"
+        print("No family members to create tree")
+        return None

@@ -122,5 +122,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Uploaded file
 
-MEDIA_URL = "familycards/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
+MEDIA_URL = '/familycards/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'familycards', 'media')

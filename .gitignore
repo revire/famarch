@@ -140,3 +140,9 @@ cython_debug/
 .DS_Store
 
 .idea/*
+
+lock/*
+Pipfile.lock
+
+
+*/migrations/*

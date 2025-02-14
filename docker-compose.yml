@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - media_volume:/app/familycards/media
+    environment:
+      - DEBUG=1
+      - PYTHONUNBUFFERED=1
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  app_data:
+  media_volume:
