@@ -1,0 +1,8 @@
+[tool.ruff]
+line-length = 88
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    "staticfiles",
+]
