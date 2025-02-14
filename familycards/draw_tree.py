@@ -1,5 +1,5 @@
 import pygraphviz as pgv
-from models import FamilyMember
+from .models import FamilyMember
 
 
 def make_family_tree():
