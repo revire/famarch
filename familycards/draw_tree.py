@@ -40,7 +40,7 @@ def make_family_tree():
                 # Use undirected edges for partners with a different style
                 graph.add_edge(member.full_name, partner, dir='none', color='blue', style='dashed')
 
-    graph.layout(prog='dot')  # 'dot' layout works well for hierarchical structures
+    graph.layout(prog='dot')
     graph.draw("static/family_graph.png")
     return "family_graph.png"
 

@@ -19,7 +19,7 @@ import logging
 
 def handle_uploaded_file(file):
     """The function deals with uploaded files"""
-    # Create the media directory if it doesn't exist
+
     os.makedirs(settings.MEDIA_ROOT, exist_ok=True)
     file_path = os.path.join(settings.MEDIA_ROOT, file.name)
     logging.info("Got the file_path")

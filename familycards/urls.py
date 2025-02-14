@@ -17,4 +17,5 @@ urlpatterns = [
     path("member/<slug>/delete", views.delete_member, name="delete_member"),
     path("tree", views.view_tree, name="view_tree"),
     path("export_csv/data/<filename>", views.export_csv, name="export_csv"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
+  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
