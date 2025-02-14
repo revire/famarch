@@ -41,8 +41,8 @@ def make_family_tree():
                 graph.add_edge(member.full_name, partner, dir='none', color='blue', style='dashed')
 
     graph.layout(prog='dot')
-    graph.draw("static/family_graph.png")
-    return "family_graph.png"
+    graph.draw("static/family_graph1.png")
+    return "family_graph1.png"
 
 
 def generate_tree():

@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import TemplateView
 from django.template.defaultfilters import slugify
 from django.conf import settings
+from django.views.decorators.cache import never_cache
 
 import os
 import csv
@@ -247,12 +248,11 @@ def export_csv(request, filename):
     response["Content-Disposition"] = f"attachment; filename={filename}"
     return response
 
-
 def about(request):
     context = {}
     return render(request, "familycards/about.html", context)
 
-# class TreeView(TemplateView):
+@never_cache
 def view_tree(request):
     tree = generate_tree()
     context = {"tree": tree}
